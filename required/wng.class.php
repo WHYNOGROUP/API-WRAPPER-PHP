@@ -14,7 +14,7 @@
  * Api wng queries, are done in curl php.
  *
  */
-class Wng
+class wng
 {
     /**
      * Endpoints of Wng Api
