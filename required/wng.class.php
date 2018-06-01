@@ -6,7 +6,8 @@
 # Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
 # Everyone is permitted to copy and distribute verbatim copies
 # of this license document, but changing it is not allowed.
-
+# WHYNOGROUP - WNG - WNL - WNA - WNH - WNR - WNC
+# 2018-06-02 - https://api.whyno.group
 
 /**
  * Wrapper to manage login and exchanges with Wng API.
