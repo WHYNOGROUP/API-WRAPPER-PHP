@@ -26,3 +26,11 @@ entering your nicHandle and your password, press 'login' and then your consumer 
 What to do next?
 ----------
 Then download this API client, and insert in your project folder. Once the client is ready, [explore the list of our API!](https://api.whyno.group/console/)
+
+Pratical Link
+----------
+ * Documentation: https://api.whyno.group/docs/
+ * Console: https://api.whyno.group/console/
+ * Create application credentials: https://cas.whyno.group/request_credential
+ * Active your consumer key: https://cas.whyno.group/
+ * Check if your consumer key work perfectly: https://cas.whyno.group/check_credential
