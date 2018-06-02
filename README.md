@@ -18,11 +18,11 @@ echo "Welcome " . $wng->get('/manager/me')['return']['firstname'];
 ?>
 ```
 
-#Are you ready?
+Are you ready?
 ----------
 It's really simple, I explain to you, [ask for a consumer key](https://cas.whyno.group/request_credential), then authenticate you to the [C.A.S](https://cas.whyno.group/) (secure authentication center),
 entering your nicHandle and your password, press 'login' and then your consumer key is now ready to be used!
 
-#What to do next?
+What to do next?
 ----------
 Then download this API client, and insert in your project folder. Once the client is ready, [explore the list of our API!](https://api.whyno.group/console/)
