@@ -6,12 +6,10 @@ PHP wrapper for WNG APIs. That's the easiest way to use WNG APIs in your PHP app
 /**
  * If you don't have a consumer key, please 
  * go on https://cas.whyno.group/request_credential
+ * else, please insert your consumer key in init.php file
  */
 
-require 'required/wng.class.php';
-
-// Initialize a new instance
-$wng = new wng("your_consumer_key");
+require 'required/init.php';
 
 // Get your name
 echo "Welcome " . $wng->get('/manager/me')['return']['firstname'];
