@@ -34,7 +34,7 @@
   	$name = basename($_FILES["userfile"]["name"]);
   	move_uploaded_file(
       $_FILES["userfile"]["tmp_name"],
-      getcwd().$temp_folder.'/'.$name
+      getcwd().$temp_folder.$name
     );
 
   }
@@ -70,7 +70,7 @@
         $wng->post(
           '/api/beta',
           $_POST['userdata'],
-          $n
+          $name
         )
       );
     break;
@@ -95,7 +95,7 @@
         $wng->put(
           $_POST['PATH'],
           $_POST['userdata'],
-          $n
+          $name
         )
       );
     break;
