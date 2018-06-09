@@ -174,9 +174,27 @@ class wng
        *
        * @return array json format
        */
-        public function prepareInput(){
+        public function prepareData(){
 
           return json_encode($this->input);
+
+        }
+
+      /**
+       * Prepare file to send api - BETA DON'T USE IT!
+       *
+       * @return object
+       */
+        public function prepareFile(){
+         
+         //We will add here a storage system in the temporary folder
+            
+         $file = 'whynogroup.jpg';
+         return new CURLFile(
+             getcwd().'/temp/'.$file,
+             mime_content_type(getcwd().'/temp/'.$file),
+             $file
+         );
 
         }
 
@@ -224,7 +242,7 @@ class wng
               CURLOPT_TIMEOUT         => 30,
               CURLOPT_HTTP_VERSION    => CURL_HTTP_VERSION_1_1,
               CURLOPT_CUSTOMREQUEST   => "{$this->method}",
-              CURLOPT_POSTFIELDS      => $this->prepareInput(),
+              CURLOPT_POSTFIELDS      => array('userfile' =>  $this->prepareFile(), 'userdata' => $this->prepareData()),
               CURLOPT_HTTPHEADER      => $this->prepareHeaders(),
             )
 
