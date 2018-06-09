@@ -1,9 +1,6 @@
 <?php
 
-require '../required/wng.class.php';
-
-// Initialize a new instance
-$wng = new wng("your_consumer_key");
+require '../required/init.php';
 
 // Get your ticket
 $result = $wng->get('/support/ticket');
