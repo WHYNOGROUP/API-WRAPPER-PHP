@@ -209,8 +209,6 @@ class wng
 
               "cache-control: no-cache",
 
-        			"Content-Type: application/json",
-
               "x-wng-consumer: {$this->consumer_key}",
 
               "x-wng-endpoint: {$this->endpoint}",
