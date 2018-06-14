@@ -221,7 +221,7 @@ class wng
               CURLOPT_MAXREDIRS       => 10,
               CURLOPT_TIMEOUT         => 30,
               CURLOPT_HTTP_VERSION    => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST   => "{$this->method}",
+              CURLOPT_CUSTOMREQUEST   => POST,
               CURLOPT_POSTFIELDS      => array('userfile' =>  $this->prepareFile(), 'userdata' => $this->prepareData()),
               CURLOPT_HTTPHEADER      => $this->prepareHeaders(),
             )
