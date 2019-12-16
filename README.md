@@ -25,8 +25,8 @@ Here is a php wrapper allowing a simplified use of your Rest API server hosted b
    * @return null
    */
    $result = $wng->POST("/me", array(
-     "FIRSTNAME"               => "xxxxxxxxxx", // The dry validity time of the application's credentials, e.g: 0 for unlimited, 3600 for 1 hour with type of core.int
-     "LASTNAME"                => "xxxxxxxxxx", // Where you want to redirect the user after sucessfull authentication with type of core.string:url
+     "FIRSTNAME"               => "Patrick",
+     "LASTNAME"                => "Slown", 
    ));
 
    /**
