@@ -1,34 +1,70 @@
 # Welcome to WHYNOGROUP API!
-PHP wrapper for WNG APIs. That's the easiest way to use WNG APIs in your PHP applications.
+Here is a php wrapper allowing a simplified use of your Rest API server hosted by whynogroup.
 
 ```php
 <?php
-/**
- * If you don't have a consumer key, please 
- * go on https://cas.whyno.group/request_credential
- * else, please insert your consumer key in init.php file
- */
+  /**
+   * First, include this script to your application.
+   */
+  require_once 'wrapper-php.wng';
+  
+   /**
+    * Instanciate an WNG Client.
+    * You can generate new credentials with full access to your account on
+    * the token creation page -> [https://api.whyno.group/?new]
+    */
+   $wng = new wng(
+     'api-eu',    // Endpoint of API WNG (List of available endpoints) 
+                  // -> http://api.whyno.group/?documentation&endpointList
+     'xxxxxxxxxx' // Consumer Key
+   );
 
-require 'required/init.php';
+  /**
+   * This API allows you to update your personal information, you can 
+   * also use any API in the same way.
+   * @return null
+   */
+   $result = $wng->POST("/me", array(
+     "FIRSTNAME"               => "xxxxxxxxxx", // The dry validity time of the application's credentials, e.g: 0 for unlimited, 3600 for 1 hour with type of core.int
+     "LASTNAME"                => "xxxxxxxxxx", // Where you want to redirect the user after sucessfull authentication with type of core.string:url
+   ));
 
-// Get your name
-echo "Welcome " . $wng->get('/manager/me')['return']['firstname'];
-?>
+   /**
+    * Return "null" if the request has been fulfilled
+    */
+    print_r($result);
+
+  /**
+   * Another example. You have created an API "/test/time" in order to
+   * obtain the unix time from the server. As you wish to obtain 
+   * information the method will necessarily be of GET type, example 
+   * of use:
+   * @return int
+   */
+   $result = $wng->GET("/test/time");
+
+
+  /**
+   * Returns "1576536041" if the request has been made correctly
+   */
+   print_r($result);
+?›
 ```
 
 Are you ready?
 ----------
-It's really simple, I explain to you, [ask for a consumer key](https://cas.whyno.group/request_credential), then authenticate you to the [C.A.S](https://cas.whyno.group/) (secure authentication center),
-entering your nicHandle and your password, press 'login' and then your consumer key is now ready to be used!
+It's really simple, I explain to you, [ask for a consumer key](https://api.whyno.group/?new), then authenticate you (api.whyno.group/?cas-auth) 
+entering your nichandle and your password, press 'login' and then your consumer key is now ready to be used!
 
 What to do next?
 ----------
-Then download this API client, and insert in your project folder. Once the client is ready, [explore the list of our API!](https://api.whyno.group/console/)
+Then download this wrapper, and insert in your project folder. Once the client is ready, [explore the list of our API!](https://api.whyno.group/?console)
 
 Pratical Link
 ----------
- * Documentation: https://api.whyno.group/docs/
- * Console: https://api.whyno.group/console/
- * Create application credentials: https://cas.whyno.group/request_credential
- * Active your consumer key: https://cas.whyno.group/
- * Check if your consumer key work perfectly: https://cas.whyno.group/check_credential
+ * Documentation: https://api.whyno.group/?docs
+ * Console: https://api.whyno.group/?console
+ * Create application credentials: https://cas.whyno.group/?new
+ * Active your consumer key: https://api.whyno.group/?auth
+ * Check if your consumer key work perfectly: https://cas.whyno.group/?check
+
