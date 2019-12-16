@@ -1,0 +1,185 @@
+<?php
+# GNU LESSER GENERAL PUBLIC LICENSE
+# Version 3, 29 June 2007
+#
+# Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+# Everyone is permitted to copy and distribute verbatim copies
+# of this license document, but changing it is not allowed.
+# WHYNOGROUP - WNG - WNL - WNA - WNH - WNR - WNC
+# 2019-12-15 - https://api.whyno.group
+
+/**
+* Here is a "wng" class allowing simple communication with your API
+* server hosted by whynogroup.
+* All requests made with this wrapper are made using curl.
+*/
+class wng
+{
+
+  /**
+  * The endpoint is defined in the class constructor, this
+  * variable lets you know where your wrapper is supposed
+  * to communicate.
+  * @var string $en
+  */
+  private $en                 = null;
+
+  /**
+  * This parameter makes it possible to store the user's
+  * consumption key in order to reuse it later in the
+  * communication protocol established by whynogroup.
+  * @var string $ck
+  */
+  private $ck                 = null;
+
+  /**
+  * [private description]
+  * @var object $cc
+  */
+  private $cc                 = null;
+
+  /**
+  * This variable allows you to store additional
+  * input parameters for APIs that require it.
+  * @var array $in
+  */
+  private $in                 = null;
+
+  /**
+  * It is an output variable, it distributes to
+  * you the information that the wrapper obtained
+  * from the API server.
+  * @var array $out
+  */
+  private $out                = null;
+
+  /**
+  * This is a parameter allowing to know to which
+  * resource of the API server the wrapper should call.
+  * @var string $path
+  */
+  private $path               = null;
+
+  /**
+  * This is a parameter allowing to know with which method
+  * the wrapper should contact the API server.
+  * @var string $method
+  */
+  private $method             = null;
+
+  /**
+  * [__construct] Initiates a new instance of the wng wrapper,
+  * it requires two variables necessary for initialization.
+  * @param string $en API server endpoint
+  * @param string $ck User consumption key
+  * @return array
+  */
+  function __construct($en, $ck){
+    $this->ck                   = $ck;
+    $this->en                   = $en;
+
+    return $this->out;
+  }
+
+  /**
+  * [get] Call API with GET method
+  * @param  string $path Contains the URI of the resource to be called
+  * @param  array  $in   Contains additional data in tabular form if applicable.
+  * @return array
+  */
+  public function get($path, $in = null){
+    $this->path                 = $path;
+    $this->in                   = $in;
+    $this->method               = "GET";
+    $this->callApi();
+
+    return $this->out;
+  }
+
+  /**
+  * [put] Call API with PUT method
+  * @param  string $path Contains the URI of the resource to be called
+  * @param  array  $in   Contains additional data in tabular form if applicable.
+  * @return array
+  */
+  public function put($path, $in = null){
+    $this->path                 = $path;
+    $this->in                   = $in;
+    $this->method               = "PUT";
+
+    $this->callApi();
+
+    return $this->out;
+  }
+
+  /**
+  * [post] Call API with POST method
+  * @param  string $path Contains the URI of the resource to be called
+  * @param  array  $in   Contains additional data in tabular form if applicable.
+  * @return array
+  */
+  public function post($path, $in = null){
+    $this->path                 = $path;
+    $this->in                   = $in;
+    $this->method               = "POST";
+
+    $this->callApi();
+
+    return $this->out;
+  }
+
+  /**
+  * [delete] Call API with DELETE method
+  * @param  string $path Contains the URI of the resource to be called
+  * @param  array  $in   Contains additional data in tabular form if applicable.
+  * @return array
+  */
+  public function delete($path, $in = null){
+    $this->path                 = $path;
+    $this->in                   = $in;
+    $this->method               = "DELETE";
+
+    $this->callApi();
+
+    return $this->out;
+  }
+
+  /**
+  * [callApi] This function allows the curl request to be made to
+  * the API server with all the data to be transmitted.
+  * @return array
+  */
+  public function callApi()
+  {
+    $this->cc                   = curl_init();
+    curl_setopt_array(
+      $this->cc,
+      array(
+        CURLOPT_URL             => $this->en . $this->path,
+        CURLOPT_RETURNTRANSFER  => true,
+        CURLOPT_ENCODING        => "",
+        CURLOPT_MAXREDIRS       => 10,
+        CURLOPT_TIMEOUT         => 30,
+        CURLOPT_HTTP_VERSION    => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST   => $this->method,
+        CURLOPT_POSTFIELDS      => json_encode($this->in),
+        CURLOPT_HTTPHEADER      => array(
+          "cache-control: no-cache",
+          "x-wng-consumer: {$this->ck}",
+          "x-wng-endpoint: {$this->en}",
+        ),
+      )
+    );
+
+    $o                          = curl_exec($this->cc);
+    $e                          = curl_error($this->cc);
+    curl_close($this->cc);
+
+    return (empty($e)) ? json_decode($o, true) : $e;
+  }
+}
+
+
+require_once 'wrapper-php.wng';
+
+$wng = new wng('api-eu.whyno.group', 'myConsumerKey');
