@@ -14,9 +14,9 @@ Here is a php wrapper allowing a simplified use of your Rest API server hosted b
     * the token creation page -> [https://api.whyno.group/?new]
     */
    $wng = new wng(
-     'api-eu',    // Endpoint of API WNG (List of available endpoints) 
-                  // -> http://api.whyno.group/?documentation&endpointList
-     'xxxxxxxxxx' // Consumer Key
+     'api-eu.whyno.group',    // Endpoint of API WNG (List of available endpoints) 
+                              // -> http://api.whyno.group/?documentation&endpointList
+     'xxxxxxxxxx'             // Consumer Key
    );
 
   /**
