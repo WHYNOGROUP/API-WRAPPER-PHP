@@ -24,7 +24,7 @@ Here is a php wrapper allowing a simplified use of your Rest API server hosted b
    * also use any API in the same way.
    * @return null
    */
-   $result = $wng->POST("/me", array(
+   $result = $wng->post("/me", array(
      "FIRSTNAME"               => "Patrick",
      "LASTNAME"                => "Slown", 
    ));
@@ -41,7 +41,7 @@ Here is a php wrapper allowing a simplified use of your Rest API server hosted b
    * of use:
    * @return int
    */
-   $result = $wng->GET("/test/time");
+   $result = $wng->get("/test/time");
 
 
   /**
