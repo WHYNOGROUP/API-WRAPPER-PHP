@@ -13,7 +13,7 @@
 * server hosted by whynogroup.
 * All requests made with this wrapper are made using curl.
 */
-class wng
+class wngs
 {
 
   /**
@@ -74,11 +74,25 @@ class wng
   * @param string $ck User consumption key
   * @return array
   */
-  function __construct($en, $ck){
+  function __construct($en, $ck = ""){
     $this->ck                   = $ck;
     $this->en                   = $en;
 
     return $this->out;
+  }
+
+  /**
+  * [code] Returns the return code that the API replied
+  */
+  public function code() {
+    return $this->out['status'];
+  }
+
+  /**
+  * [state] Returns the return status that the API has replied to
+  */
+  public function state() {
+    return $this->out['state'];
   }
 
   /**
@@ -87,13 +101,13 @@ class wng
   * @param  array  $in   Contains additional data in tabular form if applicable.
   * @return array
   */
-  public function get($path, $in = null){
+  public function get($path, $in = ""){
     $this->path                 = $path;
     $this->in                   = $in;
     $this->method               = "GET";
     $this->callApi();
 
-    return $this->out;
+    return $this->out['return'];
   }
 
   /**
@@ -102,14 +116,14 @@ class wng
   * @param  array  $in   Contains additional data in tabular form if applicable.
   * @return array
   */
-  public function put($path, $in = null){
+  public function put($path, $in = ""){
     $this->path                 = $path;
     $this->in                   = $in;
     $this->method               = "PUT";
 
     $this->callApi();
 
-    return $this->out;
+    return $this->out['return'];
   }
 
   /**
@@ -118,14 +132,14 @@ class wng
   * @param  array  $in   Contains additional data in tabular form if applicable.
   * @return array
   */
-  public function post($path, $in = null){
+  public function post($path, $in = ""){
     $this->path                 = $path;
     $this->in                   = $in;
     $this->method               = "POST";
 
     $this->callApi();
 
-    return $this->out;
+    return $this->out['return'];
   }
 
   /**
@@ -134,14 +148,14 @@ class wng
   * @param  array  $in   Contains additional data in tabular form if applicable.
   * @return array
   */
-  public function delete($path, $in = null){
+  public function delete($path, $in = ""){
     $this->path                 = $path;
     $this->in                   = $in;
     $this->method               = "DELETE";
 
     $this->callApi();
 
-    return $this->out;
+    return $this->out['return'];
   }
 
   /**
@@ -155,7 +169,7 @@ class wng
     curl_setopt_array(
       $this->cc,
       array(
-        CURLOPT_URL             => $this->en . $this->path,
+        CURLOPT_URL             => 'https://' . $this->en . $this->path,
         CURLOPT_RETURNTRANSFER  => true,
         CURLOPT_ENCODING        => "",
         CURLOPT_MAXREDIRS       => 10,
@@ -175,11 +189,6 @@ class wng
     $e                          = curl_error($this->cc);
     curl_close($this->cc);
 
-    return (empty($e)) ? json_decode($o, true) : $e;
+    $this->out = ($e) ? $e : json_decode($o, true) ;
   }
 }
-
-
-require_once 'wrapper-php.wng';
-
-$wng = new wng('api-eu.whyno.group', 'myConsumerKey');
