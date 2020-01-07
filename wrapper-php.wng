@@ -13,7 +13,7 @@
 * server hosted by whynogroup.
 * All requests made with this wrapper are made using curl.
 */
-class wngs
+class wng
 {
 
   /**
