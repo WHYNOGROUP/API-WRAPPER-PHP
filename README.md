@@ -1,5 +1,5 @@
 # Welcome to WHYNOGROUP API!
-Here is a php wrapper allowing a simplified use of your Rest API server hosted by whynogroup.
+Here is a php wrapper allowing a simplified use of your Rest API server hosted by whynogroup EU
 
 ```php
 <?php
@@ -7,14 +7,14 @@ Here is a php wrapper allowing a simplified use of your Rest API server hosted b
    * First, include this script to your application.
    */
   require_once 'wrapper-php.wng';
-  
+
    /**
     * Instanciate an WNG Client.
     * You can generate new credentials with full access to your account on
     * the token creation page -> [https://api.whyno.group/?new]
     */
    $wng = new wng(
-     'api-eu.whyno.group',    // Endpoint of API WNG (List of available endpoints) 
+     'api-eu.whyno.group',    // Endpoint of API WNG (List of available endpoints)
                               // -> http://api.whyno.group/?documentation&endpointList
      'xxxxxxxxxx'             // Consumer Key
    );
@@ -26,7 +26,7 @@ Here is a php wrapper allowing a simplified use of your Rest API server hosted b
    */
    $result = $wng->post("/me", array(
      "FIRSTNAME"               => "Patrick",
-     "LASTNAME"                => "Slown", 
+     "LASTNAME"                => "Slown",
    ));
 
    /**
@@ -36,8 +36,8 @@ Here is a php wrapper allowing a simplified use of your Rest API server hosted b
 
   /**
    * Another example. You have created an API "/test/time" in order to
-   * obtain the unix time from the server. As you wish to obtain 
-   * information the method will necessarily be of GET type, example 
+   * obtain the unix time from the server. As you wish to obtain
+   * information the method will necessarily be of GET type, example
    * of use:
    * @return int
    */
@@ -53,7 +53,7 @@ Here is a php wrapper allowing a simplified use of your Rest API server hosted b
 
 Are you ready?
 ----------
-It's really simple, I explain to you, [ask for a consumer key](https://api.whyno.group/?new), then authenticate you (api.whyno.group/?cas-auth) 
+It's really simple, I explain to you, [ask for a consumer key](https://api.whyno.group/?new), then authenticate you (api.whyno.group/?cas-auth)
 entering your nichandle and your password, press 'login' and then your consumer key is now ready to be used!
 
 What to do next?
@@ -67,4 +67,3 @@ Pratical Link
  * Create application credentials: https://cas.whyno.group/?new
  * Active your consumer key: https://api.whyno.group/?auth
  * Check if your consumer key work perfectly: https://cas.whyno.group/?check
-
