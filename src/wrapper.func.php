@@ -38,7 +38,7 @@ private $http_client = null;
     if(!isset($this->time_delta)){
       $http_client = curl_init();
 
-      $headers['X-Wng-Endpoint']                         = $this->endpoint;
+      $headers['x-wng-endpoint']                         = $this->endpoint;
       $headers['Content-Type']                           = 'application/json; charset=utf-8';
 
       curl_setopt_array($http_client, array(
@@ -86,22 +86,24 @@ private $http_client = null;
             $this->timeDrift();
         }
 
-        $headers['X-Wng-Application']                      = $this->application_key;
-        $headers['X-Wng-Timestamp']                        = time() + $this->time_delta;
+        $now                                               = time() + $this->time_delta;
+        $headers['x-wng-application']                      = $this->application_key;
+        $headers['x-wng-timestamp']                        = $now;
 
         if(isset($this->consumer_key)){
-          $headers['X-Wng-Consumer']                       = $this->consumer_key;
-          $headers['X-Wng-Signature']                      = '$1$' . sha1(
+          $headers['x-wng-consumer']                       = $this->consumer_key;
+          $headers['x-wng-signature']                      = '$1$' . sha1(
                                                                            $this->application_secret . '+' .
                                                                            $this->consumer_key . '+' .
                                                                            $method. '+' .
-                                                                           $url . '+' .
+                                                                           $path . '+' .
                                                                            $body . '+' .
                                                                            $now
                                                                          );
+
         }
       }
-      $headers['X-Wng-Endpoint']                         = $this->endpoint;
+      $headers['x-wng-endpoint']                         = $this->endpoint;
 
       curl_setopt_array($this->http_client, array(
         CURLOPT_URL             => $this->endpoint.$path,
