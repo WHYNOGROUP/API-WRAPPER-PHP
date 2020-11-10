@@ -12,12 +12,13 @@ private $endpoint = null;
 private $application_key = null;
 private $application_secret = null;
 private $consumer_key = null;
+private $token_credential = null;
 private $time_delta = null;
 
 class wng{
   public function __construct($application_key, $application_secret, $endpoint = null, $consumer_key = null){
     if(!isset($endpoint))
-      throw new \Exception\InvalidParameterException("Endpoint parameter isn't defined");
+      throw new \Exception\InvalidParameterException("Endpoint parameter is undefined");
 
     if(preg_match("/^https?:\/\/..*/", $endpoint))
       $this->endpoint = $endpoint;
@@ -41,13 +42,10 @@ class wng{
     return $this->time_delta;
   }
 
-  protected function rawCall($method, $path, $content = null, $is_authenticated = true, $headers = null){
-    if($is_authenticated){
-      if(!isset($this->application_key))
-        throw new \Exception\InvalidParameterException("Application key parameter is undefined");
-      if(!isset($this->application_secret))
-        throw new \Exception\InvalidParameterException("Application secret parameter is undefined");
-    }
+  protected function rawCall($method, $path, $content = null, $headers = null){
+
+    if(!empty($this->application_key) && !empty($this->application_secret))
+      $is_authenticated = true;
 
     $this->http_client = curl_init();
 
@@ -67,7 +65,6 @@ class wng{
 
         $headers['X-Wng-Application']                      = $this->application_key;
         $headers['X-Wng-Timestamp']                        = time() + $this->time_delta;
-        $headers['X-Wng-Endpoint']                         = $this->endpoint;
 
         if(isset($this->consumer_key)){
           $headers['X-Wng-Consumer']                       = $this->consumer_key;
@@ -81,6 +78,7 @@ class wng{
                                                                          );
         }
       }
+      $headers['X-Wng-Endpoint']                         = $this->endpoint;
 
       curl_setopt($this->http_client, array(
         CURLOPT_URL             => $this->endpoint.$path,
@@ -114,6 +112,44 @@ class wng{
 
   }
 
+  public function requestLogin($nichandle, $password){
+
+    if(!isset($this->application_secret) || empty($this->application_secret))
+      throw new \Exception\InvalidParameterException("Application secret parameter is undefined");
+    if(!isset($this->application_key) || empty($this->application_key))
+      throw new \Exception\InvalidParameterException("Application Key parameter is undefined");
+    if(!isset($this->consumer_key) || empty($this->consumer_key))
+      throw new \Exception\InvalidParameterException("Consumer Key parameter is undefined");
+    if(!isset($this->tokenCredential) || empty($this->tokenCredential))
+      throw new \Exception\InvalidParameterException("Token Credential parameter is undefined, please execute requestsCredentials() first.");
+
+    $clientSecret = openssl_encrypt($nichandle."+".$password, "AES-128-ECB", $this->application_secret);
+    $res = $this->rawCall("POST", "/auth/login", array('tokenCredential' => $this->token_credential, 'clientSecret' => $clientSecret));
+  }
+
+  public function get($path, $content = null, $headers = null){
+    return $this->rawCall("GET", $path, $content, $headers);
+  }
+
+  public function put($path, $content = null, $headers = null){
+    return $this->rawCall("PUT", $path, $content, $headers);
+  }
+
+  public function post($path, $content = null, $headers = null){
+    return $this->rawCall("POST", $path, $content, $headers);
+  }
+
+  public function delete($path, $content = null, $headers = null){
+    return $this->rawCall("DELETE", $path, $content, $headers);
+  }
+
+  public function getConsumerKey(){
+    return $this->consumer_key;
+  }
+
+  public function getHttpClient(){
+    return $this->http_client;
+  }
 
 }
 
