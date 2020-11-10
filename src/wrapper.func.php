@@ -2,6 +2,7 @@
 
 namespace wng;
 
+class wng{
 private $endpoints = array(
   'api-eu' => 'https://api-eu.whyno.group/3.0',
   'api-us' => 'https://api-us.whyno.group/3.0',
@@ -15,7 +16,6 @@ private $consumer_key = null;
 private $token_credential = null;
 private $time_delta = null;
 
-class wng{
   public function __construct($application_key, $application_secret, $endpoint = null, $consumer_key = null){
     if(!isset($endpoint))
       throw new \Exception\InvalidParameterException("Endpoint parameter is undefined");
@@ -90,7 +90,7 @@ class wng{
         CURLOPT_CUSTOMREQUEST   => $method,
         CURLOPT_POSTFIELDS      => $body,
         CURLOPT_HTTPHEADER      => $headers
-      )
+      ));
 
       $o                       = curl_exec($this->http_client);
       $e                       = curl_error($this->http_client);
@@ -109,9 +109,9 @@ class wng{
       $this->consumer_key = $res['consumer_key'];
 
       return $res;
-
   }
 
+  // TODO: add 2auth protocol here;
   public function requestLogin($nichandle, $password){
 
     if(!isset($this->application_secret) || empty($this->application_secret))
