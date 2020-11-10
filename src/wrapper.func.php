@@ -112,7 +112,7 @@ private $http_client = null;
         CURLOPT_HTTP_VERSION    => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST   => $method,
         CURLOPT_POSTFIELDS      => $body,
-        CURLOPT_HTTPHEADER      => $headers
+        CURLOPT_HTTPHEADER      => $this->writeHeaders($headers),
       ));
 
       $o                       = curl_exec($this->http_client);
@@ -121,6 +121,13 @@ private $http_client = null;
       curl_close($this->http_client);
 
       return ($e) ? $e : json_decode($o, true) ;
+  }
+
+  private function writeHeaders($headers){
+    foreach ($headers as $key => $value) {
+      $header[] .= "$key: $value";
+    }
+    return $header;
   }
 
   public function requestCredentials($accessRules, $redirection = null){
