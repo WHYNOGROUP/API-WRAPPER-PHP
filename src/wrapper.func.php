@@ -1,7 +1,5 @@
 <?php
 
-namespace wng;
-
 class wng{
 private $endpoints = array(
   'api-eu' => 'https://api-eu.whyno.group/3.0',
@@ -15,6 +13,7 @@ private $application_secret = null;
 private $consumer_key = null;
 private $token_credential = null;
 private $time_delta = null;
+private $http_client = null;
 
   public function __construct($application_key, $application_secret, $endpoint = null, $consumer_key = null){
     if(!isset($endpoint))
@@ -36,8 +35,31 @@ private $time_delta = null;
   }
 
   private function timeDrift(){
-    if(!isset($this->time_delta))
-      $this->time_delta = $this->rawCall('GET', "/auth/time", null, false)["return"] - time();
+    if(!isset($this->time_delta)){
+      $http_client = curl_init();
+
+      $headers['X-Wng-Endpoint']                         = $this->endpoint;
+      $headers['Content-Type']                           = 'application/json; charset=utf-8';
+
+      curl_setopt_array($http_client, array(
+        CURLOPT_URL             => $this->endpoint."/auth/time",
+        CURLOPT_RETURNTRANSFER  => true,
+        CURLOPT_ENCODING        => "UTF-8",
+        CURLOPT_MAXREDIRS       => 10,
+        CURLOPT_TIMEOUT         => 30,
+        CURLOPT_HTTP_VERSION    => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST   => "GET",
+        CURLOPT_POSTFIELDS      => "",
+        CURLOPT_HTTPHEADER      => $headers
+      ));
+
+      $o                       = curl_exec($http_client);
+      $e                       = curl_error($http_client);
+
+      curl_close($http_client);
+
+      $this->time_delta = ($e) ? $e : json_decode($o, true)["return"]-time() ;
+    }
 
     return $this->time_delta;
   }
@@ -46,6 +68,7 @@ private $time_delta = null;
 
     if(!empty($this->application_key) && !empty($this->application_secret))
       $is_authenticated = true;
+
 
     $this->http_client = curl_init();
 
@@ -58,10 +81,10 @@ private $time_delta = null;
         $headers = [];
 
     $headers['Content-Type'] = 'application/json; charset=utf-8';
-
     if($is_authenticated){
-        if(!isset($this->time_delta))
+        if(!isset($this->time_delta)){
             $this->timeDrift();
+        }
 
         $headers['X-Wng-Application']                      = $this->application_key;
         $headers['X-Wng-Timestamp']                        = time() + $this->time_delta;
@@ -80,7 +103,7 @@ private $time_delta = null;
       }
       $headers['X-Wng-Endpoint']                         = $this->endpoint;
 
-      curl_setopt($this->http_client, array(
+      curl_setopt_array($this->http_client, array(
         CURLOPT_URL             => $this->endpoint.$path,
         CURLOPT_RETURNTRANSFER  => true,
         CURLOPT_ENCODING        => "UTF-8",
